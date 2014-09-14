@@ -237,8 +237,13 @@ public class TextBuddy {
 	}
 
 	public static String sort(String userCommand) {
-
-		return null;
+		
+		if(textLines.isEmpty()){
+			return String.format(MESSAGE_EMPTY, textFileName );
+		
+		}else{
+			return String.format(MESSAGE_SORT, textFileName );
+		}
 	}
 	
 	private static String add(String userCommand) throws IOException {
