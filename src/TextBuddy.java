@@ -281,14 +281,13 @@ public class TextBuddy {
 			if (hasWord(keyword, nextLine)) {
 				String outputLine = numLines + ". " + nextLine;
 				displayLines.append(outputLine);
+				
 				//the last line should not have a line break after
 				if(iterArray.hasNext()){
 					displayLines.append(System.lineSeparator());
-					numLines++;
 				}
-			}else{
-				numLines++;
 			}
+			numLines++;
 		}
 		//if no match found
 		if(displayLines.length()==0){
