@@ -238,11 +238,39 @@ public class TextBuddy {
 		if(parameter.isEmpty() || !hasCorrectNumOfParameters(userCommand, 1)){
 			return String.format(MESSAGE_INVALID_FORMAT, userCommand);
 		}
-		String keyword = getSecondWord(userCommand);
-		return String.format(MESSAGE_SEARCH_NOMATCH, textFileName, keyword );
+		return searchForWord(parameter);
+		
 		
 	}
 
+
+	private static String searchForWord(String keyword) {
+		StringBuilder displayLines = new StringBuilder();
+		
+		Iterator<String> iterArray = textLines.iterator();
+		
+		int numLines = 1;
+		
+		while (iterArray.hasNext()) {
+			String nextLine = iterArray.next();
+			//check if word exists in line and display if it does
+			if (nextLine.toLowerCase().indexOf(keyword.toLowerCase()) != -1 ) {
+				String outputLine = numLines + ". " + nextLine;
+				displayLines.append(outputLine);
+				//the last line should not have a line break after
+				if(iterArray.hasNext()){
+					displayLines.append(System.lineSeparator());
+					numLines++;
+				}
+			}else{
+				numLines++;
+			}
+		}
+		if(displayLines.length()==0){
+			return String.format(MESSAGE_SEARCH_NOMATCH, textFileName, keyword);
+		}
+		return displayLines.toString();
+	}
 
 	private static String sort(String userCommand) throws IOException {
 		String parameter = removeFirstWord(userCommand);
@@ -286,7 +314,7 @@ public class TextBuddy {
 			
 		}else{
 			
-			return createListOfLines(textLines);
+			return createListOfLines();
 			
 		}
 	}
@@ -296,21 +324,21 @@ public class TextBuddy {
 	 * 
 	 * @return
 	 */
-	private static String createListOfLines(ArrayList<String> arrayLines) {
+	private static String createListOfLines() {
 		
 		StringBuilder displayLines = new StringBuilder();
 		
-		Iterator<String> iterArray = arrayLines.iterator();
+		Iterator<String> iterArray = textLines.iterator();
 		
-		int i =1;
+		int numLines =1;
 		while (iterArray.hasNext()) {
 			String nextLine = iterArray.next();
-			String outputLine = i + ". " + nextLine;
+			String outputLine = numLines + ". " + nextLine;
 			displayLines.append(outputLine);
 			//the last line should not have a line break after
 			if(iterArray.hasNext()){
 				displayLines.append(System.lineSeparator());
-				i++;
+				numLines++;
 			}
 		}
 		return displayLines.toString();
@@ -364,10 +392,6 @@ public class TextBuddy {
 
 	private static String getFirstWord(String userCommand) {
 		return userCommand.trim().split("\\s+")[0];
-	}
-	
-	private static String getSecondWord(String userCommand) {
-		return userCommand.trim().split("\\s+")[1];
 	}
 	
 	private static Boolean hasCorrectNumOfParameters(String userCommand, int num){
