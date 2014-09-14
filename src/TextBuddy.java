@@ -38,7 +38,7 @@ public class TextBuddy {
 	private static final String MESSAGE_ALL_CLEAR = "all content deleted from %1s";
 	private static final String MESSAGE_EMPTY = "%1s is empty";
 	private static final String MESSAGE_SORT = "sorted %1s successfully";
-	private static final String MESSAGE_SEARCH_NOMATCH = "Cannot find in %1s: \"%2s\"";
+	private static final String MESSAGE_SEARCH_NOMATCH = "Cannot find word in %1s: \"%2s\"";
 	private static final String MESSAGE_INVALID_FORMAT = "invalid command format: %1$s";
 	private static final String MESSAGE_INVALID_LINES = "invalid line number: %1$s";
 

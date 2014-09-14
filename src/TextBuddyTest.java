@@ -1,7 +1,7 @@
 
 import java.io.IOException;
 
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -9,8 +9,8 @@ import static org.junit.Assert.assertEquals;
 public class TextBuddyTest {
 	
 	private static StringBuilder sortedLines = new StringBuilder();		
-	@BeforeClass
-	public static void initialize() throws IOException{
+	@Before
+	public void initialize() throws IOException{
 		TextBuddy.prepareTextBuddy("mytextfile.txt");
 		setInitialFile();
 		setOutputString();
@@ -21,7 +21,7 @@ public class TextBuddyTest {
 	public void testSort() throws IOException{
 		
 		//check if invalid input commands are checked
-		assertEquals("invalid command format: sort alpha", TextBuddy.executeCommand("sort alpha"));
+		assertEquals("invalid command format: sort blah", TextBuddy.executeCommand("sort blah"));
 		
 		//check if the "sort" command returns the right status message
 		assertEquals("sorted mytextfile.txt successfully", TextBuddy.executeCommand("sort"));
@@ -34,9 +34,14 @@ public class TextBuddyTest {
 		assertEquals("mytextfile.txt is empty", TextBuddy.executeCommand("sort"));
 
 	}
+	@Test
+	public void testSearch() throws IOException{
+		
+		
+	}
 
 
-	public static void setInitialFile() throws IOException {
+	public void setInitialFile() throws IOException {
 		TextBuddy.executeCommand("clear");
 		TextBuddy.executeCommand("add Ccc");
 		TextBuddy.executeCommand("add aaa");
@@ -47,7 +52,7 @@ public class TextBuddyTest {
 	}
 
 
-	public static void setOutputString() {
+	public void setOutputString() {
 		sortedLines.append("1. !hey there");
 		sortedLines.append(System.lineSeparator());
 		sortedLines.append("2. aaa");
