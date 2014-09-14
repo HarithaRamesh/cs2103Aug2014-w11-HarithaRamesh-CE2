@@ -278,7 +278,7 @@ public class TextBuddy {
 			String nextLine = iterArray.next();
 			
 			//check if word exists in line and display if it does
-			if (nextLine.toLowerCase().indexOf(keyword.toLowerCase()) != -1 ) {
+			if (hasWord(keyword, nextLine)) {
 				String outputLine = numLines + ". " + nextLine;
 				displayLines.append(outputLine);
 				//the last line should not have a line break after
@@ -436,7 +436,7 @@ public class TextBuddy {
 		System.out.println(message);
 	}
 	
-	public static int getLineCount() {
-		return textLines.size();
+	public static boolean hasWord(String keyword, String nextLine) {
+		return (nextLine.toLowerCase().indexOf(keyword.toLowerCase()) != -1);
 	}
 }

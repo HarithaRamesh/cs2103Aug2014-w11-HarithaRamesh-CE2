@@ -54,8 +54,8 @@ public class TextBuddyTest {
 				TextBuddy.executeCommand("search bananas"));
 		
 		//check if searching in empty file returns empty message
-				TextBuddy.executeCommand("clear");
-				assertEquals("mytextfile.txt is empty", TextBuddy.executeCommand("search bananas"));
+		TextBuddy.executeCommand("clear");
+		assertEquals("mytextfile.txt is empty", TextBuddy.executeCommand("search bananas"));
 		
 	}
 
