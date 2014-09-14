@@ -62,7 +62,7 @@ public class TextBuddy {
 
 	}
 
-
+	// Initializes the file and shows welcome message
 	public static void prepareTextBuddy(String string) throws IOException {
 		textFileName = string;
 		textFile = new File(textFileName);
@@ -70,7 +70,7 @@ public class TextBuddy {
 		showToUser(String.format(MESSAGE_WELCOME, textFileName));
 	}
 	
-
+	// Awaits and executes user command till user decides to exit. 
 	public static void loopCommands() throws IOException {
 		while(true){
 			showToUser("command: ");
@@ -80,10 +80,6 @@ public class TextBuddy {
 		}
 	}
 
-	public static void showToUser(String message) {
-		System.out.println(message);
-	}
-	
 	public static void readFile() throws IOException {
 
 		checkFile();
@@ -303,6 +299,10 @@ public class TextBuddy {
 		return userCommand.trim().split("\\s+")[0];
 	}
 
+	public static void showToUser(String message) {
+		System.out.println(message);
+	}
+	
 	public static int getLineCount() {
 		return textLines.size();
 	}
