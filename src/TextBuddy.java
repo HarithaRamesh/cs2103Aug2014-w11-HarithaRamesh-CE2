@@ -55,7 +55,6 @@ public class TextBuddy {
 		private String commandString;
 
 		CommandType(){
-			
 		}
 		
 		CommandType(String command){
@@ -158,6 +157,10 @@ public class TextBuddy {
 				return delete(userCommand);
 			case CLEAR:
 				return clear(userCommand);
+			case SORT:
+				return sort(userCommand);
+			case SEARCH:
+				return search(userCommand);
 			case INVALID:
 				return String.format(MESSAGE_INVALID_FORMAT, userCommand);
 			case EXIT:
@@ -168,6 +171,8 @@ public class TextBuddy {
 				throw new Error("Unrecognized command type");
 		}
 	}
+
+
 
 	private static CommandType determineCommandType(String commandTypeString) {
 		
@@ -183,6 +188,10 @@ public class TextBuddy {
 			return CommandType.DELETE;
 		} else if (commandTypeString.equalsIgnoreCase(CommandType.CLEAR.getCommand())) {
 			return CommandType.CLEAR;
+		} else if (commandTypeString.equalsIgnoreCase(CommandType.SORT.getCommand())) {
+			return CommandType.SORT;
+		} else if (commandTypeString.equalsIgnoreCase(CommandType.SEARCH.getCommand())) {
+			return CommandType.SEARCH;
 		} else if (commandTypeString.equalsIgnoreCase(CommandType.EXIT.getCommand())) {
 		 	return CommandType.EXIT;
 		} else {
@@ -222,7 +231,16 @@ public class TextBuddy {
 	 * 
 	 */
 
+	public static String search(String userCommand) {
 
+		return null;
+	}
+
+	public static String sort(String userCommand) {
+
+		return null;
+	}
+	
 	private static String add(String userCommand) throws IOException {
 		String parameter = removeFirstWord(userCommand);
 		
