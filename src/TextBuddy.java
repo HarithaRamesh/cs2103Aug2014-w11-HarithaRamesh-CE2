@@ -153,13 +153,7 @@ public class TextBuddy {
 			System.out.println("Error while creating empty file: " + ioe);
 		}
 	}
-	
-	/**
-	 * 
-	 * @param userCommand
-	 * @return feedback to user
-	 * @throws IOException
-	 */
+
 	public static String executeCommand(String userCommand) throws IOException {
 		
 		if (userCommand.trim().equals("")){
@@ -194,11 +188,6 @@ public class TextBuddy {
 		}
 	}
 
-	/**
-	 * 
-	 * @param commandTypeString
-	 * @return
-	 */
 	private static CommandType determineCommandType(String commandTypeString) {
 		
 		if (commandTypeString == null){
@@ -267,10 +256,17 @@ public class TextBuddy {
 		if(textLines.isEmpty()){
 			return String.format(MESSAGE_EMPTY, textFileName );
 		}
+		
 		return searchForWordAndDisplay(parameter);
 		
 	}
-
+	
+	/**
+	 * Iterates through lines to look for word, and displays a list of lines numbered
+	 * by their respective line number from the original file
+	 * @param keyword
+	 * @return
+	 */
 	private static String searchForWordAndDisplay(String keyword) {
 		StringBuilder displayLines = new StringBuilder();
 		
@@ -343,7 +339,7 @@ public class TextBuddy {
 	}
 	
 	/**
-	 * 
+	 * Shows numbered list of lines to user
 	 * @param userCommand
 	 * @return
 	 */
@@ -412,13 +408,7 @@ public class TextBuddy {
 		updateFile();
 		return String.format(MESSAGE_DELETE, textFileName, deletedLine );
 	}
-	
-	/**
-	 * 
-	 * @param userCommand
-	 * @return
-	 * @throws IOException
-	 */
+
 	private static String clear(String userCommand) throws IOException {
 		String parameter = removeFirstWord(userCommand);
 		
