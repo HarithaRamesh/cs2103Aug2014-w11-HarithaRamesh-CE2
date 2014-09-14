@@ -237,16 +237,20 @@ public class TextBuddy {
 		return null;
 	}
 
-	public static String sort(String userCommand) throws IOException {
-		
+	private static String sort(String userCommand) throws IOException {
+		String parameter = removeFirstWord(userCommand);
+
+		if(!parameter.isEmpty()){
+			return String.format(MESSAGE_INVALID_FORMAT, userCommand);
+		}
+
 		if(textLines.isEmpty()){
 			return String.format(MESSAGE_EMPTY, textFileName );
-		
-		}else{
-			Collections.sort(textLines, String.CASE_INSENSITIVE_ORDER);
-			updateFile();
-			return String.format(MESSAGE_SORT, textFileName );
 		}
+		
+		Collections.sort(textLines, String.CASE_INSENSITIVE_ORDER);
+		updateFile();
+		return String.format(MESSAGE_SORT, textFileName );
 	}
 	
 	private static String add(String userCommand) throws IOException {

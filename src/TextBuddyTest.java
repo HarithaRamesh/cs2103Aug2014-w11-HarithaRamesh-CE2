@@ -20,16 +20,18 @@ public class TextBuddyTest {
 	@Test
 	public void testSort() throws IOException{
 		
+		//check if invalid input commands are checked
+		assertEquals("invalid command format: sort alpha", TextBuddy.executeCommand("sort alpha"));
 		
 		//check if the "sort" command returns the right status message
-		assertEquals("sorted mytextfile.txt successfully", TextBuddy.sort("sort"));
+		assertEquals("sorted mytextfile.txt successfully", TextBuddy.executeCommand("sort"));
 		
 		//check if sorted correctly
 		assertEquals(sortedLines.toString(), TextBuddy.executeCommand("display"));
 				
 		//check if sorting empty file returns empty message
 		TextBuddy.executeCommand("clear");
-		assertEquals("mytextfile.txt is empty", TextBuddy.sort("sort"));
+		assertEquals("mytextfile.txt is empty", TextBuddy.executeCommand("sort"));
 
 	}
 
