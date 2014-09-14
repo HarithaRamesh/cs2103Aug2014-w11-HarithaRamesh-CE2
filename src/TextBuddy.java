@@ -232,10 +232,17 @@ public class TextBuddy {
 	 * 
 	 */
 
-	public static String search(String userCommand) {
-
-		return null;
+	private static String search(String userCommand) {
+		String parameter = removeFirstWord(userCommand);
+		
+		if(parameter.isEmpty() || !hasCorrectNumOfParameters(userCommand, 1)){
+			return String.format(MESSAGE_INVALID_FORMAT, userCommand);
+		}
+		String keyword = getSecondWord(userCommand);
+		return String.format(MESSAGE_SEARCH_NOMATCH, textFileName, keyword );
+		
 	}
+
 
 	private static String sort(String userCommand) throws IOException {
 		String parameter = removeFirstWord(userCommand);
@@ -279,7 +286,7 @@ public class TextBuddy {
 			
 		}else{
 			
-			return createListOfLines();
+			return createListOfLines(textLines);
 			
 		}
 	}
@@ -289,11 +296,11 @@ public class TextBuddy {
 	 * 
 	 * @return
 	 */
-	private static String createListOfLines() {
+	private static String createListOfLines(ArrayList<String> arrayLines) {
 		
 		StringBuilder displayLines = new StringBuilder();
 		
-		Iterator<String> iterArray = textLines.iterator();
+		Iterator<String> iterArray = arrayLines.iterator();
 		
 		int i =1;
 		while (iterArray.hasNext()) {
@@ -358,7 +365,15 @@ public class TextBuddy {
 	private static String getFirstWord(String userCommand) {
 		return userCommand.trim().split("\\s+")[0];
 	}
-
+	
+	private static String getSecondWord(String userCommand) {
+		return userCommand.trim().split("\\s+")[1];
+	}
+	
+	private static Boolean hasCorrectNumOfParameters(String userCommand, int num){
+		String[] parameters = userCommand.trim().split("\\s+");
+		return (parameters.length == num+1);
+	}
 	public static void showToUser(String message) {
 		System.out.println(message);
 	}

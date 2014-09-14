@@ -20,7 +20,7 @@ public class TextBuddyTest {
 	@Test
 	public void testSort() throws IOException{
 		
-		//check if invalid input commands are checked
+		//check if invalid input commands returns right message
 		assertEquals("invalid command format: sort blah", TextBuddy.executeCommand("sort blah"));
 		
 		//check if the "sort" command returns the right status message
@@ -37,7 +37,16 @@ public class TextBuddyTest {
 	@Test
 	public void testSearch() throws IOException{
 		
+		//check if no word input command returns right message
+		assertEquals("invalid command format: search", TextBuddy.executeCommand("search"));
 		
+		//check if command with wrong number of parameters returns right message
+		assertEquals("invalid command format: search cat dog", 
+									TextBuddy.executeCommand("search cat dog"));
+		
+		//check if no match returns the right message
+		assertEquals("Cannot find word in mytextfile.txt: \"Hola\"", 
+									TextBuddy.executeCommand("search Hola"));	
 	}
 
 
