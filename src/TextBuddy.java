@@ -16,7 +16,7 @@ import java.util.Scanner;
  * file and display will show all lines including those from existing text file. 
  * These lines can also be deleted.
  * 
- * 2. Save to text file at the end of the program when user exits
+ * 2. Save to text file after each editing command.
  * 
  * 3. Delete command only allows postive integers that represent line number as 
  * parameters for deletion. 
@@ -36,13 +36,38 @@ public class TextBuddy {
 	private static final String MESSAGE_DELETE = "deleted from %1s: \"%2s\"";
 	private static final String MESSAGE_ALL_CLEAR = "all content deleted from %1s";
 	private static final String MESSAGE_EMPTY = "%1s is empty";
+	private static final String MESSAGE_SORT = "sorted %1s successfully";
+	private static final String MESSAGE_SEARCH_NOMATCH = "Cannot find in %1s: \"%2s\"";
 	private static final String MESSAGE_INVALID_FORMAT = "invalid command format: %1$s";
 	private static final String MESSAGE_INVALID_LINES = "invalid line number: %1$s";
 
-	// These are the possible command types
+	// These are the possible command types and their respective commands
 	enum CommandType { 
-		ADD, DISPLAY, DELETE, CLEAR, INVALID, EXIT
+		ADD ("add"), 
+		DISPLAY ("display"), 
+		DELETE ("delete"), 
+		CLEAR ("clear"), 
+		SORT ("sort"), 
+		SEARCH ("search"), 
+		INVALID, 
+		EXIT ("exit");
+
+		private String commandString;
+
+		CommandType(){
+			
+		}
+		
+		CommandType(String command){
+			this.commandString = command;
+		}
+		
+		String getCommand(){
+			return commandString;
+		}
 	};
+	
+	
 	
 	//Array to keep track of lines in the text file. 
 	private static ArrayList<String> textLines = new ArrayList<String>();
@@ -57,7 +82,7 @@ public class TextBuddy {
 	public static void main(String[] args) throws IOException {
 		
 		prepareTextBuddy(args[0]);
-		loopCommands();
+		runTextBuddy();
 
 
 	}
@@ -71,7 +96,7 @@ public class TextBuddy {
 	}
 	
 	// Awaits and executes user command till user decides to exit. 
-	public static void loopCommands() throws IOException {
+	private static void runTextBuddy() throws IOException {
 		while(true){
 			showToUser("command: ");
 			String command = scanner.nextLine();
@@ -82,7 +107,7 @@ public class TextBuddy {
 
 	public static void readFile() throws IOException {
 
-		checkFile();
+		checkAndCreateFile();
 		BufferedReader br = new BufferedReader(new FileReader(textFile));
 
 		try {
@@ -106,7 +131,7 @@ public class TextBuddy {
 	 * 
 	 * 
 	 */
-	private static void checkFile() {
+	private static void checkAndCreateFile() {
 
 		try {
 			textFile.createNewFile();
@@ -150,15 +175,15 @@ public class TextBuddy {
 			throw new Error("command type string cannot be null!");
 		}
 
-		if (commandTypeString.equalsIgnoreCase("add")) {
+		if (commandTypeString.equalsIgnoreCase(CommandType.ADD.getCommand())) {
 			return CommandType.ADD;
-		} else if (commandTypeString.equalsIgnoreCase("display")) {
+		} else if (commandTypeString.equalsIgnoreCase(CommandType.DISPLAY.getCommand())) {
 			return CommandType.DISPLAY;
-		} else if (commandTypeString.equalsIgnoreCase("delete")) {
+		} else if (commandTypeString.equalsIgnoreCase(CommandType.DELETE.getCommand())) {
 			return CommandType.DELETE;
-		} else if (commandTypeString.equalsIgnoreCase("clear")) {
+		} else if (commandTypeString.equalsIgnoreCase(CommandType.CLEAR.getCommand())) {
 			return CommandType.CLEAR;
-		} else if (commandTypeString.equalsIgnoreCase("exit")) {
+		} else if (commandTypeString.equalsIgnoreCase(CommandType.EXIT.getCommand())) {
 		 	return CommandType.EXIT;
 		} else {
 			return CommandType.INVALID;
@@ -178,7 +203,7 @@ public class TextBuddy {
 			
 			Iterator<String> writeIter = textLines.iterator();
 
-			while(writeIter.hasNext()){
+			while (writeIter.hasNext()) {
 				String write = writeIter.next();
 				bw.write(write);
 				bw.newLine();
@@ -198,7 +223,7 @@ public class TextBuddy {
 	 */
 
 
-	private static String add(String userCommand) {
+	private static String add(String userCommand) throws IOException {
 		String parameter = removeFirstWord(userCommand);
 		
 		if(parameter.isEmpty()){
@@ -206,7 +231,9 @@ public class TextBuddy {
 		}
 		
 		textLines.add(parameter);
+		updateFile();
 		return String.format(MESSAGE_ADD, textFileName, parameter);
+		
 	}
 	
 
@@ -222,7 +249,7 @@ public class TextBuddy {
 			
 		}else{
 			
-			return createDisplay();
+			return createListOfLines();
 			
 		}
 	}
@@ -232,14 +259,14 @@ public class TextBuddy {
 	 * 
 	 * @return
 	 */
-	private static String createDisplay() {
+	private static String createListOfLines() {
 		
 		StringBuilder displayLines = new StringBuilder();
 		
 		Iterator<String> iterArray = textLines.iterator();
 		
 		int i =1;
-		while(iterArray.hasNext()){
+		while (iterArray.hasNext()) {
 			String nextLine = iterArray.next();
 			String outputLine = i + ". " + nextLine;
 			displayLines.append(outputLine);
@@ -258,8 +285,9 @@ public class TextBuddy {
 	 * 
 	 * @param userCommand
 	 * @return
+	 * @throws IOException 
 	 */
-	private static String delete(String userCommand) {
+	private static String delete(String userCommand) throws IOException {
 		String parameter = removeFirstWord(userCommand);
 		
 		if(parameter.isEmpty()|| !parameter.matches("[0-9]+")){
@@ -274,17 +302,19 @@ public class TextBuddy {
 		
 		String deletedLine = textLines.get(lineNum);
 		textLines.remove(lineNum);
+		updateFile();
 		return String.format(MESSAGE_DELETE, textFileName, deletedLine );
 	}
 
 	
-	private static String clear(String userCommand) {
+	private static String clear(String userCommand) throws IOException {
 		String parameter = removeFirstWord(userCommand);
 		
 		if(!parameter.isEmpty()){
 			return String.format(MESSAGE_INVALID_FORMAT, userCommand);
 		}
 		textLines.clear();
+		updateFile();
 		return String.format(MESSAGE_ALL_CLEAR, textFileName );
 	}
 
