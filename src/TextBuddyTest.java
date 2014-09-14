@@ -59,7 +59,6 @@ public class TextBuddyTest {
 		
 	}
 
-
 	public void setInitialSortInputs() throws IOException {
 		TextBuddy.executeCommand("clear");
 		TextBuddy.executeCommand("add Ccc");

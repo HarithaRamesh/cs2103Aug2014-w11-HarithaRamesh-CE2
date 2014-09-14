@@ -435,7 +435,7 @@ public class TextBuddy {
 		System.out.println(message);
 	}
 	
-	public static boolean hasWord(String keyword, String nextLine) {
-		return (nextLine.toLowerCase().indexOf(keyword.toLowerCase()) != -1);
+	public static boolean hasWord(String keyword, String line) {
+		return (line.toLowerCase().indexOf(keyword.toLowerCase()) != -1);
 	}
 }
