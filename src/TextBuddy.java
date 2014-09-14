@@ -238,6 +238,9 @@ public class TextBuddy {
 		if(parameter.isEmpty() || !hasCorrectNumOfParameters(userCommand, 1)){
 			return String.format(MESSAGE_INVALID_FORMAT, userCommand);
 		}
+		if(textLines.isEmpty()){
+			return String.format(MESSAGE_EMPTY, textFileName );
+		}
 		return searchForWord(parameter);
 		
 		
@@ -266,6 +269,7 @@ public class TextBuddy {
 				numLines++;
 			}
 		}
+		//if no match found
 		if(displayLines.length()==0){
 			return String.format(MESSAGE_SEARCH_NOMATCH, textFileName, keyword);
 		}

@@ -42,16 +42,20 @@ public class TextBuddyTest {
 		assertEquals("invalid command format: search", TextBuddy.executeCommand("search"));
 		
 		//check if command with wrong number of parameters returns right message
-		assertEquals("invalid command format: search cat dog", 
-									TextBuddy.executeCommand("search cat dog"));
+		assertEquals("invalid command format: search cat dog",
+				TextBuddy.executeCommand("search cat dog"));
 		
 		//check if no match returns the right message
 		assertEquals("Cannot find word in mytextfile.txt: \"Hola\"", 
-									TextBuddy.executeCommand("search Hola"));	
+				TextBuddy.executeCommand("search Hola"));	
 		
 		//check if searching word returns right display
 		assertEquals(searchOutputLines.toString(), 
-										TextBuddy.executeCommand("search bananas"));
+				TextBuddy.executeCommand("search bananas"));
+		
+		//check if searching in empty file returns empty message
+				TextBuddy.executeCommand("clear");
+				assertEquals("mytextfile.txt is empty", TextBuddy.executeCommand("search bananas"));
 		
 	}
 
