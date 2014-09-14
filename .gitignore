@@ -1,2 +1,5 @@
 /bin
 /mytextfile.txt
+/.classpath
+/.settings
+/.project

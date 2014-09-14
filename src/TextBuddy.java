@@ -19,12 +19,20 @@ import java.util.Scanner;
  * 
  * 2. Save to text file after each editing command.
  * 
- * 3. Delete command only allows postive integers that represent line number as 
+ * 3. Delete command only allows positive integers that represent line number as 
  * parameters for deletion. 
  * 
- * 4. Cannot add whitespaces
+ * 4. Cannot add or search whitespaces
  * 
- * @author Haritha
+ * 5. Sort command sorts it alphabetically and ignores case
+ * 
+ * 6. Search command displays the lines with their respective line numbers from file, so that
+ * if you want to delete a line, you can immediately just call the delete command and put the
+ * respective line number
+ * 
+ * 7. Can only search for one word at a time
+ * 
+ * @author Haritha Ramesh
  *
  */
 
@@ -67,8 +75,6 @@ public class TextBuddy {
 		}
 	};
 	
-	
-	
 	//Array to keep track of lines in the text file. 
 	private static ArrayList<String> textLines = new ArrayList<String>();
 	
@@ -84,10 +90,13 @@ public class TextBuddy {
 		prepareTextBuddy(args[0]);
 		runTextBuddy();
 
-
 	}
 
-	// Initializes the file and shows welcome message
+	/**
+	 * Initializes the file and shows welcome message
+	 * @param string
+	 * @throws IOException
+	 */
 	public static void prepareTextBuddy(String string) throws IOException {
 		textFileName = string;
 		textFile = new File(textFileName);
@@ -95,7 +104,10 @@ public class TextBuddy {
 		showToUser(String.format(MESSAGE_WELCOME, textFileName));
 	}
 	
-	// Awaits and executes user command till user decides to exit. 
+	/**
+	 * Awaits and executes user command till user decides to exit. 
+	 * @throws IOException
+	 */
 	private static void runTextBuddy() throws IOException {
 		while(true){
 			showToUser("command: ");
@@ -104,7 +116,12 @@ public class TextBuddy {
 			showToUser(feedback);
 		}
 	}
-
+	
+	/**
+	 * Reads the lines in file and adds them (if any) to the textLines array
+	 * so that we can manipulate the array of lines easily
+	 * @throws IOException
+	 */
 	public static void readFile() throws IOException {
 
 		checkAndCreateFile();
@@ -126,10 +143,7 @@ public class TextBuddy {
 	}
 
 	/**
-	 * 
 	 * Checks if file exists, creates if file doesn't exist
-	 * 
-	 * 
 	 */
 	private static void checkAndCreateFile() {
 
@@ -140,7 +154,14 @@ public class TextBuddy {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param userCommand
+	 * @return feedback to user
+	 * @throws IOException
+	 */
 	public static String executeCommand(String userCommand) throws IOException {
+		
 		if (userCommand.trim().equals("")){
 			return String.format(MESSAGE_INVALID_FORMAT, userCommand);
 		}
@@ -173,8 +194,11 @@ public class TextBuddy {
 		}
 	}
 
-
-
+	/**
+	 * 
+	 * @param commandTypeString
+	 * @return
+	 */
 	private static CommandType determineCommandType(String commandTypeString) {
 		
 		if (commandTypeString == null){
@@ -201,9 +225,7 @@ public class TextBuddy {
 	}
 	
 	/**
-	 * 
 	 * Writes line array into text file
-	 * 
 	 * @throws IOException
 	 */
 	public static void updateFile() throws IOException {
@@ -226,28 +248,30 @@ public class TextBuddy {
 		
 	}
 
-
 	/*
 	 *=============== Methods of commands================
 	 * 
 	 */
-
+	
+	/**
+	 * Searches for word in the lines of the file, only one word allowed
+	 * @param userCommand
+	 * @return
+	 */
 	private static String search(String userCommand) {
 		String parameter = removeFirstWord(userCommand);
 		
-		if(parameter.isEmpty() || !hasCorrectNumOfParameters(userCommand, 1)){
+		if(parameter.isEmpty() || !hasCorrectNumOfParameters(parameter, 1)){
 			return String.format(MESSAGE_INVALID_FORMAT, userCommand);
 		}
 		if(textLines.isEmpty()){
 			return String.format(MESSAGE_EMPTY, textFileName );
 		}
-		return searchForWord(parameter);
-		
+		return searchForWordAndDisplay(parameter);
 		
 	}
 
-
-	private static String searchForWord(String keyword) {
+	private static String searchForWordAndDisplay(String keyword) {
 		StringBuilder displayLines = new StringBuilder();
 		
 		Iterator<String> iterArray = textLines.iterator();
@@ -256,6 +280,7 @@ public class TextBuddy {
 		
 		while (iterArray.hasNext()) {
 			String nextLine = iterArray.next();
+			
 			//check if word exists in line and display if it does
 			if (nextLine.toLowerCase().indexOf(keyword.toLowerCase()) != -1 ) {
 				String outputLine = numLines + ". " + nextLine;
@@ -275,7 +300,13 @@ public class TextBuddy {
 		}
 		return displayLines.toString();
 	}
-
+	
+	/**
+	 * Sorts alphabetically, ignoring case
+	 * @param userCommand
+	 * @return
+	 * @throws IOException
+	 */
 	private static String sort(String userCommand) throws IOException {
 		String parameter = removeFirstWord(userCommand);
 
@@ -292,6 +323,12 @@ public class TextBuddy {
 		return String.format(MESSAGE_SORT, textFileName );
 	}
 	
+	/**
+	 * Adds line given by user to the end of text file
+	 * @param userCommand
+	 * @return
+	 * @throws IOException
+	 */
 	private static String add(String userCommand) throws IOException {
 		String parameter = removeFirstWord(userCommand);
 		
@@ -305,7 +342,11 @@ public class TextBuddy {
 		
 	}
 	
-
+	/**
+	 * 
+	 * @param userCommand
+	 * @return
+	 */
 	private static String display(String userCommand) {
 		String parameter = removeFirstWord(userCommand);
 		
@@ -325,7 +366,6 @@ public class TextBuddy {
 	
 	/**
 	 * Creates list of all lines from the line array
-	 * 
 	 * @return
 	 */
 	private static String createListOfLines() {
@@ -348,10 +388,8 @@ public class TextBuddy {
 		return displayLines.toString();
 	}
 	
-	
 	/**
 	 * Deletes specified line from array using line number
-	 * 
 	 * @param userCommand
 	 * @return
 	 * @throws IOException 
@@ -374,8 +412,13 @@ public class TextBuddy {
 		updateFile();
 		return String.format(MESSAGE_DELETE, textFileName, deletedLine );
 	}
-
 	
+	/**
+	 * 
+	 * @param userCommand
+	 * @return
+	 * @throws IOException
+	 */
 	private static String clear(String userCommand) throws IOException {
 		String parameter = removeFirstWord(userCommand);
 		
@@ -387,9 +430,6 @@ public class TextBuddy {
 		return String.format(MESSAGE_ALL_CLEAR, textFileName );
 	}
 
-	
-
-
 	private static String removeFirstWord(String userCommand) {
 		return userCommand.replace(getFirstWord(userCommand), "").trim();
 	}
@@ -400,7 +440,7 @@ public class TextBuddy {
 	
 	private static Boolean hasCorrectNumOfParameters(String userCommand, int num){
 		String[] parameters = userCommand.trim().split("\\s+");
-		return (parameters.length == num+1);
+		return (parameters.length == num);
 	}
 	public static void showToUser(String message) {
 		System.out.println(message);
