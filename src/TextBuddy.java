@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Scanner;
 
@@ -236,12 +237,14 @@ public class TextBuddy {
 		return null;
 	}
 
-	public static String sort(String userCommand) {
+	public static String sort(String userCommand) throws IOException {
 		
 		if(textLines.isEmpty()){
 			return String.format(MESSAGE_EMPTY, textFileName );
 		
 		}else{
+			Collections.sort(textLines, String.CASE_INSENSITIVE_ORDER);
+			updateFile();
 			return String.format(MESSAGE_SORT, textFileName );
 		}
 	}
