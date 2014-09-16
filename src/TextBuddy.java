@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Assumptions made: 
@@ -279,17 +281,18 @@ public class TextBuddy {
 			
 			//check if word exists in line and display if it does
 			if (hasWord(keyword, nextLine)) {
-				String outputLine = numLines + ". " + nextLine;
-				displayLines.append(outputLine);
 				
-				//the last line should not have a line break after
-				if(iterArray.hasNext()){
+				//add line if list has already started
+				if(!(displayLines.length()==0)){
 					displayLines.append(System.lineSeparator());
 				}
+				String outputLine = numLines + ". " + nextLine;
+				displayLines.append(outputLine);
 			}
+			
 			numLines++;
 		}
-		//if no match found
+		//if no match found at all
 		if(displayLines.length()==0){
 			return String.format(MESSAGE_SEARCH_NOMATCH, textFileName, keyword);
 		}
@@ -435,7 +438,16 @@ public class TextBuddy {
 		System.out.println(message);
 	}
 	
+	/**
+	 * Checks if the line consists of the word, and not words with parts similar to the keyword. 
+	 * E.g. searching 'is' will only result in line 'is happy' but not 'this happy'
+	 * @param keyword
+	 * @param line
+	 * @return
+	 */
 	public static boolean hasWord(String keyword, String line) {
-		return (line.toLowerCase().indexOf(keyword.toLowerCase()) != -1);
+		Pattern pattern = Pattern.compile("\\b"+keyword.toLowerCase()+"\\b");
+		Matcher matcher = pattern.matcher(line.toLowerCase());
+		return matcher.find();
 	}
 }

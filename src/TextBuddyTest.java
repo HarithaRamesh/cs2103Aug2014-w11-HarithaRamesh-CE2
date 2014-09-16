@@ -51,11 +51,11 @@ public class TextBuddyTest {
 		
 		//check if searching word returns right display
 		assertEquals(searchOutputLines.toString(), 
-				TextBuddy.executeCommand("search bananas"));
+				TextBuddy.executeCommand("search banana"));
 		
 		//check if searching in empty file returns empty message
 		TextBuddy.executeCommand("clear");
-		assertEquals("mytextfile.txt is empty", TextBuddy.executeCommand("search bananas"));
+		assertEquals("mytextfile.txt is empty", TextBuddy.executeCommand("search banana"));
 		
 	}
 
@@ -93,11 +93,9 @@ public class TextBuddyTest {
 	}
 	
 	public void setSearchOutput() {
-		searchOutputLines.append("1. Bananas are great!");
+		searchOutputLines.append("2. Have a banana");
 		searchOutputLines.append(System.lineSeparator());
-		searchOutputLines.append("3. Hey there bananas");
-		searchOutputLines.append(System.lineSeparator());
-		searchOutputLines.append("6. peel my BANANAS");
+		searchOutputLines.append("5. Banana-rama whee");
 	}
 
 }
