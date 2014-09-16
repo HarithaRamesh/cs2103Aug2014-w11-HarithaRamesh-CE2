@@ -441,6 +441,7 @@ public class TextBuddy {
 	/**
 	 * Checks if the line consists of the word, and not words with parts similar to the keyword. 
 	 * E.g. searching 'is' will only result in line 'is happy' but not 'this happy'
+	 * Ignores case. 
 	 * @param keyword
 	 * @param line
 	 * @return
