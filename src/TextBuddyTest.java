@@ -5,7 +5,13 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-
+/**
+ * Test Class for TextBuddy. 
+ * 
+ * Assumes every other commands besides search and sort commands work.
+ * @author Haritha Ramesh
+ *
+ */
 public class TextBuddyTest {
 	
 	private static StringBuilder sortOutputLines = new StringBuilder();	
@@ -49,7 +55,8 @@ public class TextBuddyTest {
 		assertEquals("Cannot find word in mytextfile.txt: \"Hola\"", 
 				TextBuddy.executeCommand("search Hola"));	
 		
-		//check if searching word returns right display
+		//check if searching word returns right display 
+		//should only allow the word 'banana' 
 		assertEquals(searchOutputLines.toString(), 
 				TextBuddy.executeCommand("search banana"));
 		
